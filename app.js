@@ -1590,7 +1590,7 @@ function renderExp(){
     '</div>';
   refreshExpList();
 }
-}
+
 
 window.switchExpTab = function(tab, el){
   $$('.ptab').forEach(function(t){ t.classList.remove('on'); });
