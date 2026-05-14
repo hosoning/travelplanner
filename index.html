@@ -563,5 +563,35 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
   <div id="wp"></div>
   <div id="app"></div>
   <script type="module" src="app.js"></script>
+
+  <!-- Error boundary: shows JS errors instead of blank gradient -->
+  <script>
+    window.addEventListener('error', function(e) {
+      const app = document.getElementById('app');
+      if (!app) return;
+      const hasContent = app.children.length > 0;
+      if (!hasContent) {
+        app.style.cssText = [
+          'display:flex','align-items:center','justify-content:center',
+          'height:100%','padding:24px','text-align:center'
+        ].join(';');
+        app.innerHTML =
+          '<div style="color:rgba(255,255,255,.8);font-size:13px;' +
+          'background:rgba(255,255,255,.06);padding:20px 24px;' +
+          'border-radius:16px;border:1px solid rgba(255,255,255,.1);max-width:360px">' +
+          '<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:10px">启动错误</div>' +
+          '<div style="word-break:break-all;margin-bottom:8px">' + e.message + '</div>' +
+          '<div style="font-size:11px;opacity:.5">Line ' + e.lineno +
+          ' · 请检查 Firebase 配置或清除 PWA 缓存后重试</div>' +
+          '</div>';
+      }
+    });
+
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('[Travoo] Unhandled Promise:', e.reason);
+    });
+  </script>
+
+
 </body>
 </html>
