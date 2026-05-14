@@ -589,6 +589,26 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .gfab.fab-add svg polygon,.gfab.fab-add svg path{fill:#000;stroke:none}
 .gfab[hidden]{display:none!important}
 
+
+/* 1. 强制推开顶部刘海（针对你所有的页面容器） */
+#v-home, #v-exp, #v-chat, .page-container, #v-settle {
+  padding-top: env(safe-area-inset-top) !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. 强制推开底部黑条（针对你的底部导航栏） */
+/* 注意：这里我加了几个你代码中可能用到的名字 */
+.tabs, .nav-bar, footer, [id*="nav"] {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+  height: auto !important;
+}
+
+/* 3. 视觉补丁：把屏幕最底层涂黑 */
+html {
+  background-color: #000000 !important;
+}
+
+
   </style>
 </head>
 <body>
