@@ -590,11 +590,20 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .gfab[hidden]{display:none!important}
 
 
-/* 1. 强制推开顶部刘海（针对你所有的页面容器） */
-#v-home, #v-exp, #v-chat, .page-container, #v-settle {
+/* 1. 只针对最顶层的导航条做适配，不碰页面容器 */
+/* 假设你的顶栏 class 叫 .header 或 .top-bar，如果不知道名字，可以试试这个通用选择器 */
+header, [class*="header"], .nav-top {
   padding-top: env(safe-area-inset-top) !important;
-  box-sizing: border-box !important;
 }
+
+/* 2. 针对底栏：只增加内边距，不要改高度 */
+.tabs {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+  /* 确保底栏的背景色能延伸到最底部，而不是留白 */
+  background-clip: padding-box; 
+}
+
+
 
 
 
