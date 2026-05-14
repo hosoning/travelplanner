@@ -1110,7 +1110,7 @@ function renderHome(){
       recsHtml +
       xhsHtml +
       bottomHtml +
-    '</div>' +
+    '</div>';
    
 }
 
@@ -1587,9 +1587,9 @@ function renderExp(){
         '<div id="exp-list-pane"><div id="exp-list" class="list"></div></div>' +
         '<div id="exp-settle-pane" style="display:none"><div id="exp-settle" class="list"></div></div>' +
       '</div>' +
-    '</div>' +
-    
+    '</div>';
   refreshExpList();
+}
 }
 
 window.switchExpTab = function(tab, el){
