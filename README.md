@@ -1,5 +1,4 @@
-# travelplanner
-# 旅程 PWA — 部署指南
+# Travoo — 部署指南
 
 ## 第一步：创建 Firebase 项目
 
