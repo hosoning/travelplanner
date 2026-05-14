@@ -106,7 +106,7 @@ const LANGS = {
     brand:'Travoo', sub:'Plan, track & share every journey',
     join:'Join Trip', create:'Create New Trip', or:'or',
     yourName:'Your name',
-    namePh:'Name', codePh:'Enter 6-character code',
+    namePh:'Name', codePh:'6-character code',
     myTrips:'My Trips', newTrip:'New Trip',
     today:'Today', itin:'Itinerary', exp:'Expenses', ai:'Assistant', set:'Settings',
     qa:'Quick Actions', smRec:'Smart Tips', xhs:'Xiaohongshu Picks',
