@@ -30,11 +30,11 @@ if(fbReady()){
 
 // ── I18N ─────────────────────────────────────────────────────
 const LANGS = {
-  'zh-CN':{
+  '簡':{
     brand:'Travoo', sub:'和朋友一起记录每趟旅行',
     join:'加入行程', create:'创建新行程', or:'或',
     yourName:'你的名字',
-    namePh:'例：Aa、小宁、婉婉', codePh:'输入6位行程码',
+    namePh:'名字', codePh:'6位行程码',
     myTrips:'我的行程', newTrip:'新建行程',
     today:'今天', itin:'行程', exp:'花费', ai:'助手', set:'设置',
     qa:'快捷操作', smRec:'智能提醒', xhs:'小红书推荐',
@@ -66,11 +66,11 @@ const LANGS = {
     codeShare:'分享此行程码给朋友加入',
     free:'免费',
   },
-  'zh-TW':{
+  '繁':{
     brand:'Travoo', sub:'和朋友一起記錄每趟旅行',
     join:'加入行程', create:'建立新行程', or:'或',
     yourName:'你的名字',
-    namePh:'例：Aa、小寧、婉婉', codePh:'輸入6位行程碼',
+    namePh:'名字', codePh:'6位行程碼',
     myTrips:'我的行程', newTrip:'新建行程',
     today:'今天', itin:'行程', exp:'花費', ai:'助手', set:'設定',
     qa:'快捷操作', smRec:'智慧提醒', xhs:'小紅書推薦',
@@ -106,7 +106,7 @@ const LANGS = {
     brand:'Travoo', sub:'Plan, track & share every journey',
     join:'Join Trip', create:'Create New Trip', or:'or',
     yourName:'Your name',
-    namePh:'e.g. Alice, Bob', codePh:'Enter 6-character code',
+    namePh:'Name', codePh:'Enter 6-character code',
     myTrips:'My Trips', newTrip:'New Trip',
     today:'Today', itin:'Itinerary', exp:'Expenses', ai:'Assistant', set:'Settings',
     qa:'Quick Actions', smRec:'Smart Tips', xhs:'Xiaohongshu Picks',
