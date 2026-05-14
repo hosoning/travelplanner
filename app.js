@@ -198,13 +198,13 @@ function defaultDays(){
   return [
     {date:'2026-05-22',month:'5',day:'22',wd:'五',title:'抵达呼和浩特',
      items:[
-       {id:'d1a',time:'全天',title:'婉先行抵达呼市，入住酒店，自由活动',
+       {id:'d1a',time:'全天',title:'抵达呼市，入住酒店，自由活动',
         transport:'打车从机场/火车站到酒店',sMin:30,sMax:50,lodge:'呼和浩特市区 · 酒店',
         notes:'',bag:'',apps:['didi','ctrip','maps'],type:'checkin'}
      ]},
     {date:'2026-05-23',month:'5',day:'23',wd:'六',title:'呼和浩特 · 城市游',
      items:[
-       {id:'d2a',time:'09:30',title:'宁抵达呼和浩特，与婉汇合',
+       {id:'d2a',time:'09:30',title:'抵达呼和浩特及汇合',
         transport:'打车从机场/火车站到酒店',sMin:30,sMax:50,notes:'',apps:['didi','maps'],type:'transport'},
        {id:'d2b',time:'10:30',title:'入住酒店，放行李，稍作休整',
         transport:'',sMin:null,sMax:null,notes:'呼市烧麦',apps:['ctrip'],type:'rest'},
@@ -251,7 +251,7 @@ function defaultDays(){
         transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'transport'},
        {id:'d4g',time:'14:26',title:'乘坐高铁前往乌海',
         transport:'高铁 D1179（二等座）',sMin:336.5,sMax:336.5,notes:'',apps:['12306'],type:'transport',hi:true},
-       {id:'d4h',time:'17:30',title:'抵达乌海站，与玉汇合',
+       {id:'d4h',time:'17:30',title:'抵达乌海站',
         transport:'打车到酒店（约15分钟）',sMin:5,sMax:10,notes:'',apps:['didi'],type:'transport'},
        {id:'d4i',time:'18:30',title:'入住乌海酒店',
         transport:'',sMin:80,sMax:120,lodge:'乌海市区 · 酒店',notes:'乌海杂鱼锅',apps:['ctrip'],type:'checkin'},
@@ -287,12 +287,12 @@ function defaultDays(){
         transport:'打车（约1小时）',sMin:30,sMax:50,notes:'',apps:['didi'],type:'transport'},
        {id:'d6c',time:'09:00',title:'黄沙古渡游玩（骑骆驼 · 滑沙等）',
         transport:'景区通票',sMin:198,sMax:198,notes:'通票含20+项目，包含骑骆驼',apps:['maps'],type:'attr'},
-       {id:'d6d',time:'11:00',title:'从黄沙古渡出发，取行李 + 送婉去机场',
+       {id:'d6d',time:'11:00',title:'从黄沙古渡出发，取行李 + 去机场',
         transport:'打车（约1小时）',sMin:30,sMax:40,bag:'随身',
         notes:'必须准时离开',apps:['didi'],type:'transport',urgent:true},
-       {id:'d6e',time:'12:00',title:'婉抵达银川河东机场，办理登机/午餐',
+       {id:'d6e',time:'12:00',title:'抵达银川河东机场，办理登机/午餐',
         transport:'',sMin:null,sMax:null,notes:'记得买午餐',apps:['ctrip'],type:'transport'},
-       {id:'d6f',time:'14:00',title:'婉航班起飞',transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'transport'},
+       {id:'d6f',time:'14:00',title:'航班起飞',transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'transport'},
        {id:'d6g',time:'14:00后',title:'可继续在银川市区活动或各自返程',
         transport:'根据各自航班安排打车',sMin:null,sMax:null,notes:'',apps:['didi','ctrip'],type:'leisure'}
      ]}
@@ -1777,7 +1777,7 @@ window.showAddMember=function(){
     <div class="sh"></div>
     <div style="font-size:18px;font-weight:700;margin-bottom:14px">添加成员</div>
     <div class="inp-lbl">成员名字</div>
-    <input class="inp" id="nm-name" placeholder="例：Aa、小宁、婉婉" style="margin-bottom:14px">
+    <input class="inp" id="nm-name" placeholder="Name" style="margin-bottom:14px">
     <button class="btn btn-p btn-full" onclick="submitAddMember()">添加</button>
   `);
 };
