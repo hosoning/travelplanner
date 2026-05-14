@@ -220,63 +220,7 @@ function ic(n, sz) {
 
 // ── DEFAULT TRIP DATA ─────────────────────────────────────────
 function defaultDays() {
-  return [
-    {date:'2026-05-22',month:'5',day:'22',wd:'五',title:'抵达呼和浩特',items:[
-      {id:'d1a',time:'全天',title:'婉先行抵达呼市，入住酒店，自由活动',
-       transport:'打车从机场/火车站到酒店',sMin:30,sMax:50,lodge:'呼和浩特市区 · 酒店',
-       notes:'',bag:'',apps:['didi','ctrip','maps'],type:'checkin',hi:false,urgent:false}
-    ]},
-    {date:'2026-05-23',month:'5',day:'23',wd:'六',title:'呼和浩特 · 城市游',items:[
-      {id:'d2a',time:'09:30',title:'宁抵达呼和浩特，与婉汇合',transport:'打车从机场/火车站到酒店',sMin:30,sMax:50,notes:'',apps:['didi','maps'],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d2b',time:'10:30',title:'入住酒店，放行李，稍作休整',transport:'',sMin:null,sMax:null,notes:'呼市烧麦',apps:['ctrip'],type:'rest',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d2c',time:'11:30',title:'午餐',transport:'步行或打车',sMin:50,sMax:80,notes:'',apps:['dianping','maps'],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d2d',time:'13:00',title:'游览大召寺（约1.5-2小时）',transport:'市区打车往返',sMin:20,sMax:20,notes:'',apps:['didi','maps'],type:'attr',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d2e',time:'15:30',title:'逛塞上老街，吃小吃',transport:'步行',sMin:30,sMax:50,notes:'',apps:['maps','dianping'],type:'leisure',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d2f',time:'18:00',title:'晚餐',transport:'步行或打车',sMin:80,sMax:120,notes:'冰煮羊或涮羊肉',apps:['dianping','didi'],type:'food',hi:false,urgent:false,lodge:'',bag:''}
-    ]},
-    {date:'2026-05-24',month:'5',day:'24',wd:'日',title:'辉腾锡勒草原',items:[
-      {id:'d3a',time:'07:45',title:'早餐',transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d3b',time:'08:30',title:'包车出发前往辉腾锡勒草原',transport:'包车（5座，呼市→草原，含司机）',sMin:350,sMax:400,bag:'放车上',notes:'',apps:['maps'],type:'transport',hi:true,urgent:false,lodge:''},
-      {id:'d3c',time:'11:00',title:'抵达辉腾锡勒草原，入住蒙古包',transport:'',sMin:null,sMax:null,lodge:'草原蒙古包',notes:'手把肉/奶茶',apps:[],type:'checkin',hi:false,urgent:false,bag:''},
-      {id:'d3d',time:'12:00',title:'午餐',transport:'',sMin:80,sMax:120,notes:'',apps:['dianping'],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d3e',time:'14:00',title:'骑马体验（1-2小时）',transport:'马场',sMin:100,sMax:200,notes:'按小时计费',apps:[],type:'act',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d3f',time:'16:00',title:'草原自由活动：风车阵拍照 · 草地漫步',transport:'',sMin:0,sMax:0,notes:'',apps:[],type:'leisure',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d3g',time:'19:00',title:'晚餐 · 篝火晚会 · 看星空',transport:'',sMin:100,sMax:150,notes:'烤羊排',apps:[],type:'food',hi:false,urgent:false,lodge:'',bag:''}
-    ]},
-    {date:'2026-05-25',month:'5',day:'25',wd:'一',title:'火山群 → 乌海',items:[
-      {id:'d4a',time:'07:00',title:'早餐 · 退房 · 行李装车',transport:'',sMin:null,sMax:null,bag:'放车上',lodge:'乌海市区（目标）',notes:'',apps:[],type:'food',hi:false,urgent:false},
-      {id:'d4b',time:'08:00',title:'出发前往乌兰哈达火山群',transport:'包车（草原→火山，约2小时）',sMin:null,sMax:null,notes:'',apps:['maps'],type:'transport',hi:true,urgent:false,lodge:'',bag:''},
-      {id:'d4c',time:'10:00',title:'游玩3号+6号火山',transport:'',sMin:60,sMax:100,notes:'宇航服租赁60-100元',apps:['maps'],type:'attr',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d4d',time:'11:30',title:'简单午餐',transport:'',sMin:30,sMax:50,notes:'自备或附近小餐馆',apps:['dianping'],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d4e',time:'12:00',title:'出发返回呼和浩特东站',transport:'包车（火山→呼市东站，约2.5-3小时）',sMin:null,sMax:null,bag:'随身',notes:'必须准时离开',apps:['maps'],type:'transport',urgent:true,hi:true,lodge:''},
-      {id:'d4f',time:'14:20',title:'抵达呼和浩特东站，候车',transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d4g',time:'14:26',title:'乘坐高铁前往乌海',transport:'高铁 D1179（二等座）',sMin:336.5,sMax:336.5,notes:'',apps:['12306'],type:'transport',hi:true,urgent:false,lodge:'',bag:''},
-      {id:'d4h',time:'17:30',title:'抵达乌海站，与玉汇合',transport:'打车到酒店（约15分钟）',sMin:5,sMax:10,notes:'',apps:['didi'],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d4i',time:'18:30',title:'入住乌海酒店',transport:'',sMin:80,sMax:120,lodge:'乌海市区 · 酒店',notes:'乌海杂鱼锅',apps:['ctrip'],type:'checkin',hi:false,urgent:false,bag:''},
-      {id:'d4j',time:'19:30',title:'晚餐',transport:'',sMin:null,sMax:null,notes:'',apps:['dianping'],type:'food',hi:false,urgent:false,lodge:'',bag:''}
-    ]},
-    {date:'2026-05-26',month:'5',day:'26',wd:'二',title:'乌海湖 → 银川',items:[
-      {id:'d5a',time:'09:00',title:'早餐',transport:'',sMin:null,sMax:null,bag:'寄存酒店前台',notes:'',apps:[],type:'food',hi:false,urgent:false,lodge:''},
-      {id:'d5b',time:'10:00',title:'游玩乌海湖',transport:'打车往返码头（约15分钟单程）',sMin:10,sMax:15,notes:'',apps:['didi','maps'],type:'attr',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5c',time:'10:30',title:'快艇 / 游船体验',transport:'',sMin:99,sMax:129,notes:'快艇129元 / 游船100元',apps:[],type:'act',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5d',time:'12:00',title:'午餐',transport:'',sMin:80,sMax:120,notes:'黄河鲜',apps:['dianping'],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5e',time:'13:30',title:'乌海湖沙漠区：滑沙 / 越野车 / 骑驼',transport:'',sMin:130,sMax:250,notes:'滑沙约30-50，越野车约100-200',apps:['maps'],type:'act',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5f',time:'17:00',title:'晚餐',transport:'打车从景区到餐厅',sMin:60,sMax:100,notes:'',apps:['didi','dianping'],type:'food',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5g',time:'19:00',title:'返回乌海市区，取行李',transport:'',sMin:10,sMax:15,bag:'随身',notes:'',apps:['didi'],type:'transport',hi:false,urgent:false,lodge:''},
-      {id:'d5h',time:'21:00',title:'前往乌海站',transport:'打车（约15分钟）',sMin:5,sMax:10,notes:'提早去准备安检',apps:['didi'],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d5i',time:'22:11',title:'乘坐高铁前往银川',transport:'高铁 D1067（二等座）',sMin:82,sMax:82,notes:'',apps:['12306'],type:'transport',hi:true,urgent:false,lodge:'',bag:''},
-      {id:'d5j',time:'23:00',title:'抵达银川站，入住酒店',transport:'打车到酒店（约20分钟）',sMin:10,sMax:20,lodge:'银川市区 · 酒店',notes:'',apps:['didi','ctrip'],type:'checkin',hi:false,urgent:false,bag:''}
-    ]},
-    {date:'2026-05-27',month:'5',day:'27',wd:'三',title:'黄沙古渡 → 返程',items:[
-      {id:'d6a',time:'07:00',title:'早餐 · 退房 · 行李装车/寄存',transport:'',sMin:null,sMax:null,bag:'寄存酒店前台',notes:'返程安排',apps:[],type:'food',hi:false,urgent:false,lodge:''},
-      {id:'d6b',time:'08:00',title:'出发前往黄沙古渡',transport:'打车（约1小时）',sMin:30,sMax:50,notes:'',apps:['didi'],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d6c',time:'09:00',title:'黄沙古渡游玩（骑骆驼 · 滑沙等）',transport:'景区通票',sMin:198,sMax:198,notes:'通票含20+项目，包含骑骆驼',apps:['maps'],type:'attr',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d6d',time:'11:00',title:'从黄沙古渡出发，取行李 + 送婉去机场',transport:'打车（约1小时）',sMin:30,sMax:40,bag:'随身',notes:'必须准时离开',apps:['didi'],type:'transport',urgent:true,hi:false,lodge:''},
-      {id:'d6e',time:'12:00',title:'婉抵达银川河东机场，办理登机/午餐',transport:'',sMin:null,sMax:null,notes:'记得买午餐',apps:['ctrip'],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d6f',time:'14:00',title:'婉航班起飞',transport:'',sMin:null,sMax:null,notes:'',apps:[],type:'transport',hi:false,urgent:false,lodge:'',bag:''},
-      {id:'d6g',time:'14:00后',title:'可继续在银川市区活动或各自返程',transport:'根据各自航班安排打车',sMin:null,sMax:null,notes:'',apps:['didi','ctrip'],type:'leisure',hi:false,urgent:false,lodge:'',bag:''}
-    ]}
-  ];
+  return [];
 }
 
 // ── UTILS ─────────────────────────────────────────────────────
@@ -493,28 +437,75 @@ async function ocrReceipt(b64){
   } catch(e){ return null; }
 }
 
+function buildItinPrompt(){
+  return 'Parse the travel itinerary table. Columns: 日期 时间 行程 交通 Spending/人 住宿 行李 推荐/备注.\n\n' +
+  'Output a JSON array ONLY, no extra text:\n' +
+  '[{"date":"YYYY-MM-DD","month":"M","day":"DD","wd":"一|二|三|四|五|六|日","title":"day summary",\n' +
+  '"items":[{"id":"d1_1","time":"HH:MM or 全天","title":"activity name","transport":"or empty",\n' +
+  '"sMin":number_or_null,"sMax":number_or_null,"lodge":"or empty","notes":"or empty","bag":"or empty",\n' +
+  '"apps":["didi","maps","ctrip","dianping","12306"],"type":"food|transport|attr|act|checkin|rest|leisure",\n' +
+  '"hi":false,"urgent":false}]}]\n\n' +
+  'Rules:\n' +
+  '- Date like "5/22（五）" → "2026-05-22", wd:"五"\n' +
+  '- Spending "30-50" → sMin:30,sMax:50 | "20" → sMin:20,sMax:20 | "—" or blank → null\n' +
+  '- type: 早/午/晚餐/吃→food | 抵达/入住→checkin | 打车/高铁/包车→transport | 游览/游玩→attr | 体验/骑马/滑沙→act | 休整→rest | else→leisure\n' +
+  '- hi:true for 包车 or 高铁\n' +
+  '- urgent:true when notes has 必须准时\n' +
+  '- apps: "didi" if 打车; "maps" if attraction; "12306" if 高铁; "ctrip" if hotel; "dianping" if food\n' +
+  '- day title: short summary like "呼和浩特·城市游"\n' +
+  '- Merge same-date rows into one day\n' +
+  '- ids: d1_1, d1_2, d2_1 ...';
+}
+
 async function importItineraryFromImage(b64){
   var cfg = S.aiConfig;
   if(!cfg.apiKey || !cfg.endpoint) throw new Error(t('noCfg'));
-  var prompt = 'Parse this travel itinerary image. Return a JSON array only (no extra text):\n' +
-    '[{"date":"YYYY-MM-DD","month":"M","day":"DD","wd":"一|二|三|四|五|六|日","title":"day title",' +
-    '"items":[{"id":"unique","time":"HH:MM","title":"name","transport":"","sMin":null,"sMax":null,' +
-    '"lodge":"","notes":"","bag":"","apps":[],"type":"food|transport|attr|act|checkin|rest|leisure","hi":false,"urgent":false}]}]';
-  var res = await fetch(cfg.endpoint, { method:'POST',
+  var res = await fetch(cfg.endpoint, {
+    method:'POST',
     headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + cfg.apiKey },
-    body: JSON.stringify({ model: cfg.model || 'gpt-4o-mini', max_tokens:3000,
+    body: JSON.stringify({
+      model: cfg.model || 'gpt-4o',
+      max_tokens: 4000,
       messages:[{ role:'user', content:[
-        { type:'text', text:prompt },
-        { type:'image_url', image_url:{ url:b64 } }
-      ]}]}) });
+        { type:'text', text: buildItinPrompt() },
+        { type:'image_url', image_url:{ url:b64, detail:'high' } }
+      ]}]
+    })
+  });
+  if(!res.ok) throw new Error('API ' + res.status + ': ' + await res.text());
+  var d = await res.json();
+  var txt = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
+  var m = txt.match(/\[[\s\S]*\]/);
+  if(!m) throw new Error('解析失败，请换用「粘贴文字导入」');
+  var days = JSON.parse(m[0]);
+  if(!days || !days.length) throw new Error('未识别到行程数据');
+  return days;
+}
+
+async function importItineraryFromText(text){
+  var cfg = S.aiConfig;
+  if(!cfg.apiKey || !cfg.endpoint) throw new Error(t('noCfg'));
+  var res = await fetch(cfg.endpoint, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + cfg.apiKey },
+    body: JSON.stringify({
+      model: cfg.model || 'gpt-4o-mini',
+      max_tokens: 4000,
+      messages:[{
+        role:'user',
+        content: buildItinPrompt() + '\n\nItinerary text:\n' + text
+      }]
+    })
+  });
   if(!res.ok) throw new Error('API ' + res.status);
   var d = await res.json();
   var txt = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
   var m = txt.match(/\[[\s\S]*\]/);
-  if(!m) throw new Error('Failed to parse response');
-  return JSON.parse(m[0]);
+  if(!m) throw new Error('解析失败');
+  var days = JSON.parse(m[0]);
+  if(!days || !days.length) throw new Error('未识别到数据');
+  return days;
 }
-
 // ── SETTLEMENT ────────────────────────────────────────────────
 function calcSettle(){
   var ids = Object.keys(S.members);
@@ -826,10 +817,31 @@ function renderApp(){
       '<div class="tab" id="tb-set"  onclick="switchTab(\'set\')">'  + ic('cog',24) + '</div>' +
     '</nav>';
   switchTab('home');
-  subscribeAll(S.tripCode);
+    subscribeAll(S.tripCode);
   setInterval(checkNotifs, 60000);
   setTimeout(checkNotifs, 2000);
   requestGeo();
+
+  var oldFab = document.getElementById('gfab-mic');
+  if(oldFab) oldFab.remove();
+  var oldFab2 = document.getElementById('gfab-add');
+  if(oldFab2) oldFab2.remove();
+
+  var micFab = document.createElement('button');
+  micFab.id = 'gfab-mic';
+  micFab.className = 'gfab';
+  micFab.innerHTML = ic('mic', 22);
+  micFab.addEventListener('mousedown', function(){ startVoice(handleVoiceIntent); });
+  micFab.addEventListener('touchstart', function(e){ e.preventDefault(); startVoice(handleVoiceIntent); });
+  document.getElementById('app').appendChild(micFab);
+
+  var addFab = document.createElement('button');
+  addFab.id = 'gfab-add';
+  addFab.className = 'gfab fab-add';
+  addFab.setAttribute('hidden','');
+  addFab.innerHTML = ic('plus', 22);
+  addFab.addEventListener('click', function(){ showAddExpenseModal(); });
+  document.getElementById('app').appendChild(addFab);
 }
 
 window.switchTab = function(name){
@@ -840,8 +852,19 @@ window.switchTab = function(name){
   if(tb) tb.classList.add('on');
   if(vw) vw.classList.add('active');
   S.tab = name;
-  var fn = { home:renderHome, itin:renderItin, exp:renderExp, chat:renderChat, set:renderSet };
+    var fn = { home:renderHome, itin:renderItin, exp:renderExp, chat:renderChat, set:renderSet };
   if(fn[name]) fn[name]();
+
+  var micFab = document.getElementById('gfab-mic');
+  var addFab = document.getElementById('gfab-add');
+  if(micFab){
+    if(name === 'home' || name === 'chat'){ micFab.removeAttribute('hidden'); }
+    else { micFab.setAttribute('hidden',''); }
+  }
+  if(addFab){
+    if(name === 'exp'){ addFab.removeAttribute('hidden'); }
+    else { addFab.setAttribute('hidden',''); }
+  }
 };
 
 // ── ONBOARDING ────────────────────────────────────────────────
@@ -1088,7 +1111,7 @@ function renderHome(){
       xhsHtml +
       bottomHtml +
     '</div>' +
-    '<button class="fab" onmousedown="startVoiceFAB()" ontouchstart="startVoiceFAB()">' + ic('mic',22) + '</button>';
+   
 }
 
 function buildSmartRecs(todayDay, h){
@@ -1430,16 +1453,69 @@ window.showTripEditModal = function(){
     '<div class="inp-lbl">行程名称</div>' +
     '<input class="inp" id="te-name" value="' + escHtml(trip.name||'') + '" placeholder="我的旅行" style="margin-bottom:10px">' +
     '<div class="inp-lbl">日期范围</div>' +
-    '<input class="inp" id="te-dates" value="' + escHtml(trip.dates||'') + '" placeholder="2026.05.22 — 05.27" style="margin-bottom:10px">' +
-    '<div class="inp-lbl">AI 导入行程（拍照 / 截图）</div>' +
-    '<button class="btn btn-g btn-full" style="margin-bottom:8px" onclick="importFromImage()">' +
-  ic('camera',16) + ' 拍照/上传行程截图（AI 识别）' +
-'</button>' +
-'<button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="loadDemoData()">' +
-  ic('cal',16) + ' 加载内蒙古宁夏示例行程' +
-'</button>' +
-'<button class="btn btn-p btn-full" onclick="saveTripInfo()" style="margin-bottom:8px">' + t('save') + '</button>'
+    '<input class="inp" id="te-dates" value="' + escHtml(trip.dates||'') + '" placeholder="2026.05.22 — 05.27" style="margin-bottom:14px">' +
+    '<div style="font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px">导入行程数据</div>' +
+    '<div style="padding:14px;background:var(--g1);border:1px solid var(--gb);border-radius:var(--r2);margin-bottom:14px">' +
+      '<div style="font-size:12px;color:var(--t3);margin-bottom:10px;line-height:1.6">' +
+        '支持你的行程表格格式<br>（Excel/PDF截图 或 直接粘贴文字）' +
+      '</div>' +
+      '<button class="btn btn-g btn-full" style="padding:11px;margin-bottom:8px" onclick="importFromImage()">' +
+        ic('camera',16) + ' 拍照 / 截图识别' +
+      '</button>' +
+      '<button class="btn btn-g btn-full" style="padding:11px" onclick="showPasteImport()">' +
+        ic('edit',16) + ' 粘贴文字导入（推荐）' +
+      '</button>' +
+    '</div>' +
+    '<button class="btn btn-p btn-full" onclick="saveTripInfo()">' + t('save') + '</button>'
   );
+};
+
+window.showPasteImport = function(){
+  closeModal();
+  setTimeout(function(){
+    showModal(
+      '<div class="sh"></div>' +
+      '<div style="font-size:18px;font-weight:700;margin-bottom:6px">粘贴行程文字</div>' +
+      '<div style="font-size:13px;color:var(--t2);margin-bottom:12px;line-height:1.6">' +
+        '打开你的 Excel 或 PDF，<br>' +
+        '全选所有内容复制，粘贴到下方文本框，<br>' +
+        '然后点「AI 解析导入」。' +
+      '</div>' +
+      '<textarea class="inp" id="paste-txt" style="min-height:200px;font-size:13px;margin-bottom:14px" ' +
+        'placeholder="5/22（五）全天 婉先行抵达呼市..."></textarea>' +
+      '<button class="btn btn-p btn-full" onclick="submitPasteImport()" style="margin-bottom:8px">AI 解析导入</button>' +
+      '<button class="btn btn-g btn-full" onclick="closeModal()">' + t('cancel') + '</button>'
+    );
+  }, 280);
+};
+
+window.submitPasteImport = async function(){
+  var el = $('#paste-txt');
+  var txt = el ? el.value.trim() : '';
+  if(!txt || txt.length < 10){ toast('请先粘贴行程内容'); return; }
+  closeModal();
+  showLoad();
+  try{
+    var days = await importItineraryFromText(txt);
+    await fbSaveDays(days);
+    if(S.trip && days.length > 0){
+      var first = days[0];
+      var last  = days[days.length-1];
+      var autoDates = first.month + '/' + first.day + ' — ' + last.month + '/' + last.day;
+      S.trip.dates = autoDates;
+      if(db && S.tripCode){
+        await updateDoc(doc(db,'trips',S.tripCode), { dates: autoDates });
+      }
+      _addLocalTrip(S.tripCode, S.trip.name || '我的旅行', autoDates);
+    }
+    hideLoad();
+    renderItin();
+    var itemCount = days.reduce(function(a,d){ return a + d.items.length; }, 0);
+    toast('导入成功：' + days.length + ' 天，' + itemCount + ' 个项目');
+  } catch(e){
+    hideLoad();
+    toast('解析失败：' + e.message);
+  }
 };
 
 window.saveTripInfo = async function(){
@@ -1525,7 +1601,7 @@ function renderExp(){
         '<div id="exp-settle-pane" style="display:none"><div id="exp-settle" class="list"></div></div>' +
       '</div>' +
     '</div>' +
-    '<button class="fab" onclick="showAddExpenseModal()">' + ic('plus',22) + '</button>';
+    
   refreshExpList();
 }
 
