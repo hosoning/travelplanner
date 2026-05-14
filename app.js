@@ -30,7 +30,7 @@ if(fbReady()){
 
 // ── I18N ─────────────────────────────────────────────────────
 const LANGS = {
-  '簡':{
+  'zh-CN':{
     brand:'Travoo', sub:'和朋友一起记录每趟旅行',
     join:'加入行程', create:'创建新行程', or:'或',
     yourName:'你的名字',
@@ -66,7 +66,7 @@ const LANGS = {
     codeShare:'分享此行程码给朋友加入',
     free:'免费',
   },
-  '繁':{
+  'zh-TW':{
     brand:'Travoo', sub:'和朋友一起記錄每趟旅行',
     join:'加入行程', create:'建立新行程', or:'或',
     yourName:'你的名字',
