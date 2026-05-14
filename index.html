@@ -590,22 +590,6 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .gfab[hidden]{display:none!important}
 
 
-/* 1. 专门针对顶栏：把“我的旅行”这些文字顶下来 */
-/* 根据你之前的截图，尝试给你的 header 容器加 padding */
-.header, .nav-top, #v-home > div:first-child {
-  padding-top: env(safe-area-inset-top) !important;
-}
-
-/* 3. 针对那个麦克风按钮 (.gfab) 的修正 */
-.gfab {
-  /* 让它始终保持在底栏上方 16px 的位置 */
-  bottom: calc(46px + env(safe-area-inset-bottom) + 16px) !important;
-}
-
-
-
-
-
 
 
 
