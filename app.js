@@ -1867,7 +1867,7 @@ window.presetAI = function(p, el){
   el.classList.add('on');
   var epEl = $('#cfg-ep'), mdEl = $('#cfg-model');
   if(p === 'openai' && epEl && mdEl){ epEl.value = 'https://api.openai.com/v1/chat/completions'; mdEl.value = 'gpt-4o-mini'; }
-  if(p === 'poe'    && epEl && mdEl){ epEl.value = 'https://api.poe.com/bot/chat_completions';   mdEl.value = 'GPT-4o-mini'; }
+  if(p === 'poe'    && epEl && mdEl){ epEl.value = 'https://api.poe.com/v1/chat/completions';   mdEl.value = 'GPT-4o-mini'; }
 };
 
 window.saveAICfg = function(){
