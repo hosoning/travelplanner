@@ -1520,18 +1520,6 @@ window.submitPasteImport = async function(){
 
 window.saveTripInfo = async function(){
   
-  window.loadDemoData = async function(){
-  if(!confirm('这会用内蒙古宁夏示例行程覆盖当前行程，确认吗？')) return;
-  closeModal();
-  showLoad();
-  var days = defaultDays();
-  await fbSaveDays(days);
-  if(S.trip){ S.trip.name='内蒙古 · 宁夏'; S.trip.dates='2026.05.22 — 05.27'; }
-  if(db && S.tripCode) await updateDoc(doc(db,'trips',S.tripCode),{name:'内蒙古 · 宁夏',dates:'2026.05.22 — 05.27'});
-  _addLocalTrip(S.tripCode,'内蒙古 · 宁夏','2026.05.22 — 05.27');
-  hideLoad();
-  renderItin();
-  toast('示例行程已加载');
 };
   
   var name  = ($('#te-name')  && $('#te-name').value.trim())  || '';
