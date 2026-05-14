@@ -172,7 +172,7 @@ const APPS = {
   ctrip:       { label:'携程',      scheme:'ctrip://',            web:'https://m.ctrip.com' },
   dianping:    { label:'大众点评',  scheme:'dianping://',         web:'https://m.dianping.com' },
   '12306':     { label:'12306',     scheme:'cn.12306://',         web:'https://m.12306.cn' },
-  xiaohongshu: { label:'小红书',    scheme:'xhsdiscover://',      web:'https://www.xiaohongshu.com/search_result/?keyword=' },
+  xiaohongshu: { label:'小红书', scheme:'xhsdiscover://search?keyword=', web:'https://www.xiaohongshu.com/search_result?keyword=' },
   wechat:      { label:'微信',      scheme:'weixin://',           web:'https://weixin.qq.com' },
   whatsapp:    { label:'WhatsApp',  scheme:'whatsapp://send?text=', web:'https://api.whatsapp.com/send?text=' },
   line:        { label:'LINE',      scheme:'line://msg/text/',    web:'https://line.me/R/msg/text/?' },
@@ -368,7 +368,7 @@ async function fbCreateTrip(code, name){
   var color = COLORS[0];
   var members = {};
   members[mid] = { name: name, color: color };
-  var data = { code:code, name:'我的旅行', dates:'', creatorId:mid, members:members, days:defaultDays(), msgApp:'wechat' };
+  var data = { code:code, name:'我的旅行', dates:'', creatorId:mid, members:members, days:[], msgApp:'wechat' };
   S.trip = data; S.members = members;
   if(db){
     var fd = Object.assign({}, data, { createdAt: serverTimestamp() });
@@ -749,17 +749,40 @@ window.openApp = function(key, extra){
   var app = APPS[key];
   if(!app) return;
   extra = extra || '';
-  showLoad();
-  if(app.scheme){
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = app.scheme + extra;
-    document.body.appendChild(iframe);
-    setTimeout(function(){ iframe.remove(); hideLoad(); window.open(app.web + extra, '_blank'); }, 1400);
-    setTimeout(function(){ hideLoad(); }, 800);
-  } else {
-    hideLoad();
+
+  // No scheme — open web directly
+  if(!app.scheme){
     window.open(app.web + extra, '_blank');
+    return;
+  }
+
+  showLoad();
+  var webUrl  = app.web + extra;
+  var schemeUrl = app.scheme + extra;
+  var opened  = false;
+  var timer;
+
+  // Detect if native app opened (page goes to background)
+  function onHide(){
+    if(document.hidden){ opened = true; clearTimeout(timer); hideLoad(); }
+  }
+  document.addEventListener('visibilitychange', onHide);
+
+  timer = setTimeout(function(){
+    document.removeEventListener('visibilitychange', onHide);
+    if(!opened){
+      hideLoad();
+      window.open(webUrl, '_blank');
+    }
+  }, 1800);
+
+  try{
+    window.location.href = schemeUrl;
+  } catch(e){
+    clearTimeout(timer);
+    document.removeEventListener('visibilitychange', onHide);
+    hideLoad();
+    window.open(webUrl, '_blank');
   }
 };
 
@@ -1409,14 +1432,32 @@ window.showTripEditModal = function(){
     '<div class="inp-lbl">日期范围</div>' +
     '<input class="inp" id="te-dates" value="' + escHtml(trip.dates||'') + '" placeholder="2026.05.22 — 05.27" style="margin-bottom:10px">' +
     '<div class="inp-lbl">AI 导入行程（拍照 / 截图）</div>' +
-    '<button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="importFromImage()">' +
-      ic('camera',16) + ' 拍照/上传行程截图（AI 识别）' +
-    '</button>' +
-    '<button class="btn btn-p btn-full" onclick="saveTripInfo()" style="margin-bottom:8px">' + t('save') + '</button>'
+    '<button class="btn btn-g btn-full" style="margin-bottom:8px" onclick="importFromImage()">' +
+  ic('camera',16) + ' 拍照/上传行程截图（AI 识别）' +
+'</button>' +
+'<button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="loadDemoData()">' +
+  ic('cal',16) + ' 加载内蒙古宁夏示例行程' +
+'</button>' +
+'<button class="btn btn-p btn-full" onclick="saveTripInfo()" style="margin-bottom:8px">' + t('save') + '</button>'
   );
 };
 
 window.saveTripInfo = async function(){
+  
+  window.loadDemoData = async function(){
+  if(!confirm('这会用内蒙古宁夏示例行程覆盖当前行程，确认吗？')) return;
+  closeModal();
+  showLoad();
+  var days = defaultDays();
+  await fbSaveDays(days);
+  if(S.trip){ S.trip.name='内蒙古 · 宁夏'; S.trip.dates='2026.05.22 — 05.27'; }
+  if(db && S.tripCode) await updateDoc(doc(db,'trips',S.tripCode),{name:'内蒙古 · 宁夏',dates:'2026.05.22 — 05.27'});
+  _addLocalTrip(S.tripCode,'内蒙古 · 宁夏','2026.05.22 — 05.27');
+  hideLoad();
+  renderItin();
+  toast('示例行程已加载');
+};
+  
   var name  = ($('#te-name')  && $('#te-name').value.trim())  || '';
   var dates = ($('#te-dates') && $('#te-dates').value.trim()) || '';
   if(!S.trip) return;
