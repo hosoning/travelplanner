@@ -590,18 +590,31 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .gfab[hidden]{display:none!important}
 
 
-/* 1. 只针对最顶层的导航条做适配，不碰页面容器 */
-/* 假设你的顶栏 class 叫 .header 或 .top-bar，如果不知道名字，可以试试这个通用选择器 */
-header, [class*="header"], .nav-top {
+/* 1. 专门针对顶栏：把“我的旅行”这些文字顶下来 */
+/* 根据你之前的截图，尝试给你的 header 容器加 padding */
+.header, .nav-top, #v-home > div:first-child {
   padding-top: env(safe-area-inset-top) !important;
 }
 
-/* 2. 针对底栏：只增加内边距，不要改高度 */
+/* 2. 专门针对底栏：把那排图标顶上去，同时把底部的白色断层盖住 */
+/* 你的底栏 class 叫 .tabs (参考 image_10.png) */
 .tabs {
+  /* 46px 是你原本 .tab 的高度，我们通过 calc 动态增加安全高度 */
+  height: calc(46px + env(safe-area-inset-bottom)) !important;
   padding-bottom: env(safe-area-inset-bottom) !important;
-  /* 确保底栏的背景色能延伸到最底部，而不是留白 */
-  background-clip: padding-box; 
+  
+  /* 关键：确保底栏的背景色能一直延伸到屏幕最底部 */
+  background-clip: border-box;
+  display: flex;
+  align-items: flex-start; /* 让图标保持在上方，不要跟着沉到底部 */
 }
+
+/* 3. 针对那个麦克风按钮 (.gfab) 的修正 */
+.gfab {
+  /* 让它始终保持在底栏上方 16px 的位置 */
+  bottom: calc(46px + env(safe-area-inset-bottom) + 16px) !important;
+}
+
 
 
 
