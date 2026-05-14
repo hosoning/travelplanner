@@ -158,7 +158,7 @@ const S = {
   unsubs:      [],
   geo:         null,
   tokenUsed:   +(localStorage.getItem('tokenUsed')  || 0),
-  tokenBudget: +(localStorage.getItem('tokenBudget') || 4000),
+  tokenBudget: +(localStorage.getItem('tokenBudget') || 500),
   msgApp:      localStorage.getItem('msgApp') || 'wechat',
   localTrips:  JSON.parse(localStorage.getItem('localTrips') || '[]'),
 };
