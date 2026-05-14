@@ -1,8 +1,9 @@
 {
-  "name": "旅程",
-  "short_name": "旅程",
-  "description": "共享旅行行程管理",
-  "start_url": "/",
+  "name": "Travoo",
+  "short_name": "Travoo",
+  "description": "Plan, track & share every journey with friends",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#000000",
@@ -22,7 +23,7 @@
     }
   ],
   "shortcuts": [
-    { "name": "今日行程", "url": "/#home",     "description": "查看今天的行程" },
-    { "name": "记录花费", "url": "/#expenses", "description": "添加消费记录" }
+    { "name": "Today", "url": "./#home",     "description": "View today's itinerary" },
+    { "name": "Expenses", "url": "./#expenses", "description": "Log an expense" }
   ]
 }

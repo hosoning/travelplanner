@@ -23,12 +23,27 @@ const FIREBASE_CONFIG = {
 };
 
 // ── INIT FIREBASE ─────────────────────────────────────────────
+// Guard: only init Firebase when config has been filled in
+function isFirebaseReady() {
+  return !!(
+    FIREBASE_CONFIG.apiKey &&
+    !FIREBASE_CONFIG.apiKey.startsWith('YOUR_') &&
+    FIREBASE_CONFIG.projectId &&
+    FIREBASE_CONFIG.projectId !== 'YOUR_PROJECT_ID'
+  );
+}
+
 let fbApp, db, storage;
-try {
-  fbApp   = initializeApp(FIREBASE_CONFIG);
-  db      = getFirestore(fbApp);
-  storage = getStorage(fbApp);
-} catch(e) { console.warn('[Firebase]', e.message); }
+if (isFirebaseReady()) {
+  try {
+    fbApp   = initializeApp(FIREBASE_CONFIG);
+    db      = getFirestore(fbApp);
+    storage = getStorage(fbApp);
+    console.info('[Travoo] Firebase connected');
+  } catch(e) { console.warn('[Firebase]', e.message); }
+} else {
+  console.info('[Travoo] Local mode — Firebase config not set');
+}
 
 // ── STATE ─────────────────────────────────────────────────────
 const S = {
@@ -348,7 +363,7 @@ function showNotifBanner(title, body, sub = '') {
   banner.innerHTML = `
     <div class="notif-hdr">
       <div class="notif-icon">${svgIcon('bell', 13)}</div>
-      <span class="notif-app">旅程</span>
+      <span class="notif-app">Travoo</span>
       <span class="notif-time">现在</span>
     </div>
     <div class="notif-title">${title}</div>
@@ -366,36 +381,67 @@ function dismissBanner(banner) {
 
 // ── FIREBASE OPS ──────────────────────────────────────────────
 async function loadTrip(code) {
-  if (!db) return false;
+  if (!db) {
+    // Offline: check localStorage
+    try {
+      const raw = localStorage.getItem('lt_' + code);
+      if (raw) {
+        const d = JSON.parse(raw);
+        S.trip = d; S.members = d.members || {};
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
   try {
     const snap = await getDoc(doc(db, 'trips', code));
     if (!snap.exists()) return false;
     S.trip    = snap.data();
     S.members = S.trip.members || {};
     return true;
-  } catch(e) { console.warn('[FB] loadTrip', e); return false; }
+  } catch(e) {
+    console.warn('[FB] loadTrip', e);
+    showToast('连接失败，请检查 Firebase 配置或网络');
+    return false;
+  }
 }
-
 async function createTrip(code, memberName) {
-  if (!db) { S.trip = { ...TRIP_DATA, members:{}, code }; return true; }
   const memberId = 'u_' + Date.now();
   const color    = MEMBER_COLORS[0];
+  const members  = { [memberId]: { name: memberName, color } };
+
+  if (!db) {
+    const tripData = { ...TRIP_DATA, code, creatorId: memberId, members };
+    S.trip = tripData; S.members = members;
+    try { localStorage.setItem('lt_' + code, JSON.stringify(tripData)); } catch(e) {}
+    return { memberId, color };   // was wrongly returning `true` before
+  }
+
   const tripData = {
-    ...TRIP_DATA,
-    code,
-    createdAt: serverTimestamp(),
-    creatorId: memberId,
+    ...TRIP_DATA, code,
+    createdAt: serverTimestamp(), creatorId: memberId,
     members: { [memberId]: { name: memberName, color, joinedAt: serverTimestamp() } }
   };
   await setDoc(doc(db, 'trips', code), tripData);
+  // Set local state immediately so renderApp doesn't race with the listener
+  S.trip = { ...TRIP_DATA, code, members }; S.members = members;
   return { memberId, color };
 }
 
 async function joinTrip(code, memberName) {
-  if (!db) return null;
-  const memberId = 'u_' + Date.now();
+  const memberId   = 'u_' + Date.now();
   const usedColors = Object.values(S.members || {}).map(m => m.color);
-  const color = MEMBER_COLORS.find(c => !usedColors.includes(c)) || MEMBER_COLORS[Math.floor(Math.random()*MEMBER_COLORS.length)];
+  const color      = MEMBER_COLORS.find(c => !usedColors.includes(c)) || MEMBER_COLORS[0];
+
+  // Update local state immediately regardless of Firebase
+  S.members[memberId] = { name: memberName, color };
+  if (S.trip) { S.trip.members = { ...S.trip.members, [memberId]: { name: memberName, color } }; }
+
+  if (!db) {
+    try { if (S.trip) localStorage.setItem('lt_' + code, JSON.stringify(S.trip)); } catch(e) {}
+    return { memberId, color };
+  }
+
   await updateDoc(doc(db, 'trips', code), {
     [`members.${memberId}`]: { name: memberName, color, joinedAt: serverTimestamp() }
   });
@@ -636,13 +682,13 @@ function renderOnboarding() {
             <path d="M18 16 L26 6 L34 16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
-        <h1 class="ob-title">旅程</h1>
-        <p class="ob-sub">和朋友一起记录每段旅行</p>
+	 <h1 class="ob-title">Travoo</h1>
+        <p class="ob-sub">Plan, track &amp; share every journey</p>
         <div class="ob-form">
           <div class="inp-label">行程码</div>
-          <input class="code-input" id="trip-code-inp" maxlength="6" placeholder="输入6位行程码" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <input class="code-input" id="trip-code-inp" maxlength="6" placeholder="6位行程码" autocomplete="off" autocapitalize="characters" spellcheck="false">
           <div class="inp-label" style="margin-top:6px">你的名字</div>
-          <input class="inp" id="member-name-inp" maxlength="20" placeholder="例：Aa、小宁、婉婉" autocomplete="off">
+          <input class="inp" id="member-name-inp" maxlength="20" placeholder="Your Name" autocomplete="off">
           <button class="btn btn-primary btn-full" onclick="handleJoinTrip()">
             加入行程
           </button>
@@ -666,36 +712,50 @@ window.handleJoinTrip = async function() {
   const name = $('#member-name-inp').value.trim();
   if (code.length < 6) return showToast('请输入6位行程码');
   if (!name)           return showToast('请输入你的名字');
-  showToast('连接中...', false);
-  const exists = await loadTrip(code);
-  if (!exists) return showToast('找不到此行程码，请检查');
-  const result = await joinTrip(code, name);
-  if (!result) return showToast('加入失败，请重试');
-  localStorage.setItem('tripCode',   code);
-  localStorage.setItem('memberId',   result.memberId);
-  localStorage.setItem('memberName', name);
-  S.tripCode   = code;
-  S.memberId   = result.memberId;
-  S.memberName = name;
-  renderApp();
+
+  const btn = document.querySelector('#view-onboarding .btn-primary');
+  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = '加入行程'; } };
+  if (btn) { btn.disabled = true; btn.textContent = '连接中...'; }
+
+  try {
+    const exists = await loadTrip(code);
+    if (!exists) { showToast('找不到此行程码，请检查'); restore(); return; }
+
+    const result = await joinTrip(code, name);
+    localStorage.setItem('tripCode',   code);
+    localStorage.setItem('memberId',   result.memberId);
+    localStorage.setItem('memberName', name);
+    S.tripCode = code; S.memberId = result.memberId; S.memberName = name;
+    renderApp();
+  } catch(e) {
+    console.error('[join]', e);
+    showToast('加入失败：' + (e.message || '请重试'));
+    restore();
+  }
 };
 
 window.handleCreateTrip = async function() {
   const name = $('#member-name-inp').value.trim();
   if (!name) return showToast('请先输入你的名字');
-  const code   = generateCode();
-  const result = await createTrip(code, name);
-  if (!result) return showToast('创建失败，请重试');
-  localStorage.setItem('tripCode',   code);
-  localStorage.setItem('memberId',   result.memberId);
-  localStorage.setItem('memberName', name);
-  S.tripCode   = code;
-  S.memberId   = result.memberId;
-  S.memberName = name;
-  S.trip       = { ...TRIP_DATA, code, members: { [result.memberId]: { name, color: result.color } } };
-  S.members    = S.trip.members;
-  renderApp();
-  showToast(`行程码：${code}，分享给朋友`);
+
+  const btn = document.querySelector('#view-onboarding .btn-ghost');
+  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = '创建新行程'; } };
+  if (btn) { btn.disabled = true; btn.textContent = '创建中...'; }
+
+  try {
+    const code   = generateCode();
+    const result = await createTrip(code, name);   // now always returns {memberId, color}
+    localStorage.setItem('tripCode',   code);
+    localStorage.setItem('memberId',   result.memberId);
+    localStorage.setItem('memberName', name);
+    S.tripCode = code; S.memberId = result.memberId; S.memberName = name;
+    renderApp();
+    showToast(`行程码：${code}，分享给朋友`);
+  } catch(e) {
+    console.error('[create]', e);
+    showToast('创建失败：' + (e.message || '请重试'));
+    restore();
+  }
 };
 
 // ── HOME VIEW ─────────────────────────────────────────────────
@@ -1495,7 +1555,7 @@ function renderSettings() {
             <span class="list-row-label">版本</span>
             <span class="list-row-value">1.0.0</span>
           </div>
-          <div class="list-row" onclick="showToast('旅程 PWA — 内蒙古 · 宁夏特别版')">
+          <div class="list-row" onclick="showToast('Travoo — 内蒙古 · 宁夏')">
             <span class="list-row-label">行程信息</span>
             <span class="list-row-value">${TRIP_DATA.name}</span>
           </div>
