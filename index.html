@@ -596,19 +596,6 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
   padding-top: env(safe-area-inset-top) !important;
 }
 
-/* 2. 专门针对底栏：把那排图标顶上去，同时把底部的白色断层盖住 */
-/* 你的底栏 class 叫 .tabs (参考 image_10.png) */
-.tabs {
-  /* 46px 是你原本 .tab 的高度，我们通过 calc 动态增加安全高度 */
-  height: calc(46px + env(safe-area-inset-bottom)) !important;
-  padding-bottom: env(safe-area-inset-bottom) !important;
-  
-  /* 关键：确保底栏的背景色能一直延伸到屏幕最底部 */
-  background-clip: border-box;
-  display: flex;
-  align-items: flex-start; /* 让图标保持在上方，不要跟着沉到底部 */
-}
-
 /* 3. 针对那个麦克风按钮 (.gfab) 的修正 */
 .gfab {
   /* 让它始终保持在底栏上方 16px 的位置 */
