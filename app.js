@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// Travoo v3.1 — app.js  (Safari JSC syntax-safe)
+// Travoo v5 — app.js  (Safari JSC syntax-safe)
 // ═══════════════════════════════════════════════════════════════
 import { initializeApp }   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import {
