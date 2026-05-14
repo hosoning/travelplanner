@@ -613,33 +613,122 @@ function getXHSRecs(){
 
 // ── VOICE ─────────────────────────────────────────────────────
 var recognition = null;
+
+function showVoiceFallback(onResult){
+  showModal(
+    '<div class="sh"></div>' +
+    '<div style="font-size:18px;font-weight:700;margin-bottom:6px">语音不可用</div>' +
+    '<div style="font-size:13px;color:var(--t2);margin-bottom:14px">Safari 需授权麦克风，或直接手动输入</div>' +
+    '<input class="inp" id="vf-inp" placeholder="输入内容后点确认..." style="margin-bottom:14px" autofocus>' +
+    '<button class="btn btn-p btn-full" onclick="submitVoiceFallback()">确认</button>'
+  );
+  window._voiceFallbackCb = onResult;
+}
+window.submitVoiceFallback = function(){
+  var txt = $('#vf-inp') && $('#vf-inp').value.trim();
+  closeModal();
+  if(txt && window._voiceFallbackCb) window._voiceFallbackCb(txt);
+};
+
 function startVoice(onResult){
   var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRec){ toast('此浏览器不支持语音识别'); return; }
+  if(!SpeechRec){ showVoiceFallback(onResult); return; }
+
+  var finalText = '';
+  var isDone = false;
+
   var ov = document.createElement('div');
   ov.className = 'voice-ov';
-  ov.innerHTML = '<div class="voice-ring">' + ic('mic',40) + '</div>' +
-    '<div class="voice-hint">' + t('listening') + '</div>' +
-    '<div class="voice-text" id="voice-txt"></div>' +
-    '<div class="voice-cancel">' + t('cancel') + '</div>';
+  ov.innerHTML =
+    '<div class="voice-ring" id="vring">' + ic('mic',40) + '</div>' +
+    '<div class="voice-hint" id="vhint">' + t('listening') + '</div>' +
+    '<div class="voice-text" id="voice-txt" style="min-height:48px;max-width:320px;text-align:center;padding:0 24px"></div>' +
+    '<div style="display:flex;gap:12px;margin-top:28px">' +
+      '<div class="voice-cancel" id="v-done" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;padding:10px 28px">完成</div>' +
+      '<div class="voice-cancel" id="v-cancel">' + t('cancel') + '</div>' +
+    '</div>' +
+    '<div style="font-size:11px;color:rgba(255,255,255,.28);margin-top:14px">说完后点「完成」</div>';
   document.body.appendChild(ov);
-  ov.querySelector('.voice-cancel').addEventListener('click', function(){ if(recognition) recognition.stop(); ov.remove(); });
-  recognition = new SpeechRec();
-  recognition.lang = S.lang === 'en' ? 'en-US' : 'zh-CN';
-  recognition.continuous = false;
-  recognition.interimResults = true;
-  recognition.onresult = function(e){
-    var txt = Array.prototype.slice.call(e.results).map(function(r){ return r[0].transcript; }).join('');
-    var el = $('#voice-txt');
-    if(el) el.textContent = txt;
-  };
-  recognition.onend = function(){
-    var txt = ($('#voice-txt') && $('#voice-txt').textContent) || '';
+
+  function finish(){
+    if(isDone) return;
+    isDone = true;
+    try{ if(recognition) recognition.stop(); }catch(e){}
     ov.remove();
-    if(txt.trim()) onResult(txt.trim());
+    var result = finalText.trim() || (($('#voice-txt') && $('#voice-txt').textContent) || '').trim();
+    if(result) onResult(result);
+  }
+  function cancel(){
+    isDone = true;
+    try{ if(recognition) recognition.stop(); }catch(e){}
+    ov.remove();
+  }
+
+  $('#v-done').addEventListener('click', finish);
+  $('#v-cancel').addEventListener('click', cancel);
+
+  recognition = new SpeechRec();
+  // cmn-Hans-CN 比 zh-CN 在 Safari 识别率更高
+  recognition.lang = S.lang === 'en' ? 'en-US' : 'cmn-Hans-CN';
+  recognition.continuous = true;       // 不自动停止
+  recognition.interimResults = true;   // 实时显示
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = function(){
+    var ring = $('#vring');
+    if(ring) ring.style.animation = 'vring 0.8s ease-in-out infinite';
   };
-  recognition.onerror = function(){ ov.remove(); };
-  recognition.start();
+
+  recognition.onresult = function(e){
+    var interim = '';
+    for(var i = e.resultIndex; i < e.results.length; i++){
+      var seg = e.results[i][0].transcript;
+      if(e.results[i].isFinal){ finalText += seg; }
+      else { interim += seg; }
+    }
+    var el = $('#voice-txt');
+    if(el){
+      el.innerHTML =
+        '<span style="color:rgba(255,255,255,.95)">' + escHtml(finalText) + '</span>' +
+        (interim ? '<span style="color:rgba(255,255,255,.45)">' + escHtml(interim) + '</span>' : '');
+    }
+  };
+
+  recognition.onerror = function(e){
+    var hint = $('#vhint');
+    var errMsgs = {
+      'no-speech':    '没听到声音，请靠近麦克风',
+      'audio-capture':'麦克风不可用',
+      'not-allowed':  '请在 Safari 设置中允许麦克风权限',
+      'network':      '网络错误'
+    };
+    if(hint){
+      hint.textContent = errMsgs[e.error] || ('识别错误：' + e.error);
+      hint.style.color = 'rgba(255,100,80,.9)';
+    }
+    // no-speech 时自动重启继续监听
+    if(e.error === 'no-speech' && !isDone){
+      setTimeout(function(){
+        try{ recognition.start(); }catch(err){}
+      }, 200);
+    }
+  };
+
+  recognition.onend = function(){
+    // continuous 模式下意外停止则重启，直到用户点完成
+    if(!isDone){
+      setTimeout(function(){
+        try{ recognition.start(); }catch(e){ finish(); }
+      }, 150);
+    }
+  };
+
+  try{
+    recognition.start();
+  } catch(e){
+    ov.remove();
+    showVoiceFallback(onResult);
+  }
 }
 
 function handleVoiceIntent(txt){
@@ -736,8 +825,9 @@ window.switchTab = function(name){
 function renderOnboarding(){
   var offlineNote = fbReady() ? '' :
     '<div style="font-size:12px;color:var(--t3);text-align:center;padding:6px 0;line-height:1.5">' + t('offlineNote') + '</div>';
+var LANG_LABEL = {'zh-CN':'简','zh-TW':'繁','en':'EN'};
   var langChips = ['zh-CN','zh-TW','en'].map(function(l){
-    return '<div class="chip ' + (S.lang === l ? 'on' : '') + '" style="padding:5px 12px;font-size:12px" onclick="setLang(\'' + l + '\')">' + l + '</div>';
+    return '<div class="chip ' + (S.lang === l ? 'on' : '') + '" style="padding:5px 14px;font-size:13px;font-weight:600" onclick="setLang(\'' + l + '\')">' + LANG_LABEL[l] + '</div>';
   }).join('');
   document.getElementById('app').innerHTML =
     '<div id="v-ob" class="view active">' +
@@ -1770,10 +1860,11 @@ function renderSet(){
       '<span class="lr-lbl">' + escHtml(m.name) + '</span>' + youTag + '</div>';
   });
 
-  var langChips = ['zh-CN','zh-TW','en'].map(function(l){
-    return '<div class="chip ' + (S.lang===l?'on':'') + '" onclick="setLang(\'' + l + '\')">' + l + '</div>';
+  var LANG_LABEL = {'zh-CN':'简','zh-TW':'繁','en':'EN'};
+   var langChips = ['zh-CN','zh-TW','en'].map(function(l){
+    return '<div class="chip ' + (S.lang===l?'on':'') + '" style="font-weight:600" onclick="setLang(\'' + l + '\')">' + LANG_LABEL[l] + '</div>';
   }).join('');
-
+  
   var msgChips = MSG_APPS.map(function(a){
     return '<div class="chip ' + (S.msgApp===a?'on':'') + '" onclick="setMsgApp(\'' + a + '\')">' + escHtml(APPS[a].label) + '</div>';
   }).join('');
