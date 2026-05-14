@@ -561,6 +561,27 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .pop{animation:popIn .36s var(--sp) both}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .shake{animation:shake .4s ease}
+
+/* Global FAB — 直接挂在 #app，绕过 backdrop-filter containing block */
+.gfab{
+  position:fixed;
+  z-index:300;
+  bottom:calc(var(--tabh) + 16px);
+  right:18px;
+  width:52px;height:52px;border-radius:50%;
+  background:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 22px rgba(255,255,255,.22);
+  transition:all .25s var(--sp);
+  -webkit-transform:translateZ(0);  /* 强制 GPU 层，脱离父级 containing block */
+  transform:translateZ(0);
+}
+.gfab:active{transform:translateZ(0) scale(.84)}
+.gfab svg{width:22px;height:22px}
+.gfab svg path,.gfab svg polygon,.gfab svg rect{stroke:#000;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gfab.fab-add svg polygon,.gfab.fab-add svg path{fill:#000;stroke:none}
+.gfab[hidden]{display:none!important}
+
   </style>
 </head>
 <body>
