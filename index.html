@@ -51,9 +51,9 @@ html,body{height:100%;overflow:hidden;
 /* ══ WALLPAPER ════════════════════════════════════════════════*/
 #wp{position:fixed;inset:0;z-index:0;
   background:
-    radial-gradient(ellipse 100% 70% at 25% 0%,rgba(0,100,240,.45) 0%,transparent 55%),
-    radial-gradient(ellipse 80% 60% at 85% 100%,rgba(130,0,220,.3) 0%,transparent 55%),
-    linear-gradient(160deg,#000814 0%,#060118 50%,#010a14 100%);
+    radial-gradient(ellipse 110% 50% at 20% 0%,  rgba(210,165,95,.18) 0%,transparent 52%),
+    radial-gradient(ellipse 80%  55% at 85% 100%, rgba(95,120,160,.15) 0%,transparent 52%),
+    linear-gradient(158deg, #1a1610 0%, #111318 52%, #13100f 100%);
   transition:background .8s ease}
 #wp.img{background-image:var(--wpi);background-size:cover;background-position:center}
 #wp.img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.5)}
@@ -70,7 +70,7 @@ html,body{height:100%;overflow:hidden;
 .g>*{position:relative;z-index:1}
 
 /* ══ VIEW SYSTEM ══════════════════════════════════════════════*/
-.view{display:none;flex:1;flex-direction:column;position:absolute;inset:0;overflow:hidden}
+.view{display:none;flex:1;flex-direction:column;position:absolute;inset:0;overflow:clip}
 .view.active{display:flex;animation:vIn .38s var(--sp2) both}
 .view.push{animation:vPush .4s var(--sp2) both}
 .view.pop{animation:vPop .32s var(--ease) both}
@@ -79,7 +79,8 @@ html,body{height:100%;overflow:hidden;
 @keyframes vPop{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
 
 .scroller{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
-  padding-bottom:calc(var(--tabh)+24px)}
+  padding-bottom:calc(var(--tabh)+24px);
+  min-height:0}
 .scroller::-webkit-scrollbar{display:none}
 
 /* ══ NAV ══════════════════════════════════════════════════════*/
@@ -533,7 +534,8 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 
 /* ══ MISC ═════════════════════════════════════════════════════*/
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:56px 28px;gap:10px;text-align:center}
+  padding:56px 28px;gap:10px;text-align:center;
+  min-height:calc(100dvh - 260px)}
 .empty svg{width:52px;height:52px;opacity:.2}
 .empty svg path,.empty svg circle,.empty svg rect,.empty svg polyline{stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round}
 .empty-ttl{font-size:17px;font-weight:600;color:var(--t2)}
