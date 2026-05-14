@@ -356,7 +356,7 @@ async function fbAddExpense(data){
     S.expenses.unshift(Object.assign({ id:'loc_' + Date.now() }, exp));
     refreshExpList();
   }
-｝
+}
 
 async function fbDelExpense(id){
   if(db && S.tripCode){ await deleteDoc(doc(db, 'trips', S.tripCode, 'expenses', id)); }
