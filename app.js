@@ -9,12 +9,12 @@ import {
 
 // ── FIREBASE CONFIG ──────────────────────────────────────────
 const FB_CFG = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyCyimwLDWNx92ihDmdHTdFSw4A8g34lPWI",
+  authDomain:        "travoo-com.firebaseapp.com",
+  projectId:         "travoo-com",
+  storageBucket:     "travoo-com.firebasestorage.app",
+  messagingSenderId: "544581218382",
+  appId:             "1:544581218382:web:cb0511ab135f15a252931f"
 };
 function fbReady(){ return FB_CFG.apiKey && !FB_CFG.apiKey.startsWith('YOUR_'); }
 let fbApp, db;
