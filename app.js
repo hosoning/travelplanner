@@ -1520,7 +1520,6 @@ window.submitPasteImport = async function(){
 
 window.saveTripInfo = async function(){
   
-};
   
   var name  = ($('#te-name')  && $('#te-name').value.trim())  || '';
   var dates = ($('#te-dates') && $('#te-dates').value.trim()) || '';
