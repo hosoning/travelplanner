@@ -573,7 +573,7 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 22px rgba(255,255,255,.22);
   transition:all .25s var(--sp);
-  -webkit-transform:translateZ(0);  /* 强制 GPU 层，脱离父级 containing block */
+  -webkit-transform:translateZ(0);
   transform:translateZ(0);
 }
 .gfab:active{transform:translateZ(0) scale(.84)}
@@ -581,6 +581,19 @@ input:checked+.tsl::before{transform:translateX(20px);background:#fff}
 .gfab svg path,.gfab svg polygon,.gfab svg rect{stroke:#000;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .gfab.fab-add svg polygon,.gfab.fab-add svg path{fill:#000;stroke:none}
 .gfab[hidden]{display:none!important}
+
+/* ══ SAFE AREA DIRECT FIX (iOS PWA Safari) ═══════════════════*/
+/* Safari iOS PWA 有时会把 env() 放进 CSS 变量后计算为 0，           */
+/* 在这里直接用 env() 覆盖，绕过该问题，不影响任何 UI 样式。         */
+.nav{padding:calc(env(safe-area-inset-top,44px) + 6px) 18px 8px}
+.ob{padding:calc(env(safe-area-inset-top,44px) + 40px) 32px calc(env(safe-area-inset-bottom,34px) + 40px)}
+.nb{top:calc(env(safe-area-inset-top,44px) + 10px)}
+.tabs{padding:6px 4px env(safe-area-inset-bottom,34px)}
+.sheet{padding:18px 18px calc(env(safe-area-inset-bottom,34px) + 22px)}
+.scroller{padding-bottom:calc(62px + env(safe-area-inset-bottom,34px) + 40px)}
+.itin-page{padding-bottom:calc(62px + env(safe-area-inset-bottom,34px) + 52px)}
+.chat-bar{padding:9px 14px calc(62px + env(safe-area-inset-bottom,34px) + 12px)}
+.gfab{bottom:calc(62px + env(safe-area-inset-bottom,34px) + 16px)}
 
   </style>
 </head>
