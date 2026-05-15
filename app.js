@@ -45,7 +45,7 @@ const LANGS = {
     food:'餐饮', transport:'交通', attr:'景点', act:'活动', other:'其他',
     save:'保存', del:'删除', cancel:'取消',
     aiPh:'问我任何旅行问题…',
-    aiWelcome:'AI 旅行助手',
+    aiWelcome:'Travoo 旅行管家',
     aiWelcomeSub:'可以问我餐厅推荐、景点攻略\n打车方式、花费分析等问题',
     noExp:'暂无记录', noExpSub:'点击此处添加花费',
     paidBy:'付款人', splitW:'分摊成员',
@@ -66,7 +66,7 @@ const LANGS = {
     free:'免费',
     you:'你', viewFull:'查看完整行程',
     settled:'已结清', settledSub:'没有待结算款项',
-    addMember:'添加成员', logExp:'记账', aiAsst:'AI助手',
+    addMember:'添加成员', logExp:'记账', aiAsst:'問問 Travoo 旅行管家',
     importXlsx:'导入 Excel (.xlsx)', pasteImport:'粘贴文字 / 表格',
     invite:'邀请', nMembers:'名成员',
     confirmDelItem:'确认删除此项目？',
@@ -79,7 +79,7 @@ const LANGS = {
     confirmLeaveTitle:'退出行程',
     confirmLeaveMsg:'退出后需重新输入行程码才能访问',
     confirmLeaveBtn:'确认退出',
-    addMemberTitle:'添加成员', addMemberPh:'例：Alice、小明',
+    addMemberTitle:'添加成员', addMemberPh:'成员名字',
     timeLabel:'时间', actNameLabel:'活动名称',
     transLabel:'交通方式（可留空）',
     spendMinLabel:'预计花费最低 (¥)', spendMaxLabel:'预计花费最高 (¥)',
@@ -90,7 +90,7 @@ const LANGS = {
     importHint:'支持 Excel (.xlsx) 或粘贴表格文字（无需 AI）',
     importHint2:'★ 推荐：Excel 全选复制后粘贴，或直接导入 .xlsx',
     pasteImportTitle:'粘贴行程文字',
-    pasteHint:'支持格式：\n① Excel 全选复制粘贴\n② 每行：5/22 08:00 早餐\n③ 日期行 + 活动行',
+    pasteHint:'支持格式：\n① Excel 全选复制粘贴\n② 每行：1/1 08:00 早餐\n③ 日期行 + 活动行',
     aiImgImport:'图片截图识别 (AI)',
     aiImgHint:'配置 AI 后可使用',
     geoObtained:'已获取', geoNotObtained:'未获取',
@@ -105,7 +105,7 @@ const LANGS = {
     logged:'已记录', deleted:'已删除',
     importOk:'导入成功', importFail:'解析失败，请检查格式',
     addedDay:'已添加',
-    transferTo:'转给', relatedApps:'相关应用', askAIBtn:'询问 AI 助手',
+    transferTo:'转给', relatedApps:'相关应用', askAIBtn:'问问Travoo 旅行管家',
     sendUpdate:'发送消息',
   },
   'zh-TW':{
@@ -123,7 +123,7 @@ const LANGS = {
     food:'餐飲', transport:'交通', attr:'景點', act:'活動', other:'其他',
     save:'儲存', del:'刪除', cancel:'取消',
     aiPh:'問我任何旅遊問題…',
-    aiWelcome:'AI 旅行助手',
+    aiWelcome:'Travoo旅行管家',
     aiWelcomeSub:'可以問我餐廳推薦、景點攻略\n搭車方式、花費分析等問題',
     noExp:'暫無記錄', noExpSub:'點擊此處添加花費',
     paidBy:'付款人', splitW:'分攤成員',
@@ -189,7 +189,7 @@ const LANGS = {
   'en':{
     brand:'Travoo', sub:'Plan, track & share every journey',
     join:'Join Trip', create:'Create New Trip', or:'or',
-    yourName:'Your name', namePh:'Name', codePh:'6-character code',
+    yourName:'Your name', namePh:'Name', codePh:'6-char',
     myTrips:'My Trips', newTrip:'New Trip',
     today:'Today', itin:'Itinerary', exp:'Expenses', ai:'Assistant', set:'Settings',
     qa:'Quick Actions', smRec:'Smart Tips', xhs:'Xiaohongshu Picks',
@@ -201,7 +201,7 @@ const LANGS = {
     food:'Food', transport:'Transport', attr:'Attraction', act:'Activity', other:'Other',
     save:'Save', del:'Delete', cancel:'Cancel',
     aiPh:'Ask me anything about this trip…',
-    aiWelcome:'AI Travel Assistant',
+    aiWelcome:'Travoo Assistant',
     aiWelcomeSub:'Ask about restaurants, attractions,\ntransport, expenses and more',
     noExp:'No expenses yet', noExpSub:'Tap here to add an expense',
     paidBy:'Paid by', splitW:'Split with',
@@ -235,7 +235,7 @@ const LANGS = {
     confirmLeaveTitle:'Leave Trip',
     confirmLeaveMsg:"You'll need the trip code to rejoin",
     confirmLeaveBtn:'Confirm Leave',
-    addMemberTitle:'Add Member', addMemberPh:'e.g. Alice, Bob',
+    addMemberTitle:'Add Member', addMemberPh:'Member's Name',
     timeLabel:'Time', actNameLabel:'Activity Name',
     transLabel:'Transport (optional)',
     spendMinLabel:'Min Spend (¥)', spendMaxLabel:'Max Spend (¥)',
@@ -571,13 +571,13 @@ function buildItinPrompt(){
   '"apps":["didi","maps","ctrip","dianping","12306"],"type":"food|transport|attr|act|checkin|rest|leisure",\n' +
   '"hi":false,"urgent":false}]}]\n\n' +
   'Rules:\n' +
-  '- Date like "5/22（五）" → "2026-05-22", wd:"五"\n' +
+  '- Date like "1/1（六）" → "2020-01-01", wd:"六"\n' +
   '- Spending "30-50" → sMin:30,sMax:50 | "20" → sMin:20,sMax:20 | "—" or blank → null\n' +
   '- type: 早/午/晚餐/吃→food | 抵达/入住→checkin | 打车/高铁/包车→transport | 游览/游玩→attr | 体验/骑马/滑沙→act | 休整→rest | else→leisure\n' +
   '- hi:true for 包车 or 高铁\n' +
   '- urgent:true when notes has 必须准时\n' +
   '- apps: "didi" if 打车; "maps" if attraction; "12306" if 高铁; "ctrip" if hotel; "dianping" if food\n' +
-  '- day title: short summary like "呼和浩特·城市游"\n' +
+  '- day title: short summary like "首尔·City Walk"\n' +
   '- Merge same-date rows into one day\n' +
   '- ids: d1_1, d1_2, d2_1 ...';
 }
@@ -812,7 +812,7 @@ function parseItineraryLocal(text){
 // xlsx import using SheetJS
 window.importFromXlsx = function(){
   if(typeof XLSX === 'undefined'){
-    toast('Excel 库加载中，请刷新后重试');
+    toast('Excel数据加载中，请刷新后重试');
     return;
   }
   var inp = document.createElement('input');
@@ -1646,7 +1646,7 @@ window.showAddDayModal = function(){
     '<div class="inp-lbl">' + t('date') + '</div>' +
     '<input class="inp" id="ad-date" type="date" style="margin-bottom:10px">' +
     '<div class="inp-lbl">' + t('desc') + '</div>' +
-    '<input class="inp" id="ad-title" placeholder="例：抵达上海" style="margin-bottom:14px">' +
+    '<input class="inp" id="ad-title" placeholder="例：抵达首尔" style="margin-bottom:14px">' +
     '<button class="btn btn-p btn-full" onclick="submitAddDay()">' + t('addNewDay') + '</button>'
   );
 };
