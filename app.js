@@ -807,7 +807,7 @@ function startVoice(onResult){
   $('#v-done').addEventListener('click',finish); $('#v-cancel').addEventListener('click',cancel);
   recognition=new SR(); recognition.lang=S.lang==='en'?'en-US':'cmn-Hans-CN'; recognition.continuous=true; recognition.interimResults=true;
   recognition.onresult=function(e){ var interim=''; for(var i=e.resultIndex;i<e.results.length;i++){ var seg=e.results[i][0].transcript; if(e.results[i].isFinal){ finalText+=seg; }else{ interim+=seg; } } var el=$('#voice-txt'); if(el) el.innerHTML='<span style="color:rgba(255,255,255,.95)">'+escHtml(finalText)+'</span>'+(interim?'<span style="color:rgba(255,255,255,.45)">'+escHtml(interim)+'</span>':''); };
-  recognition.onerror=function(e){ var hint=$('#vhint'); if(hint){ hint.textContent={no-speech:'没听到','audio-capture':'麦克风不可用','not-allowed':'请允许麦克风'}[e.error]||e.error; } if(e.error==='no-speech'&&!isDone) setTimeout(function(){ try{ recognition.start(); }catch(er){} },200); };
+  recognition.onerror=function(e){ var hint=$('#vhint'); if(hint){ hint.textContent={'no-speech':'没听到','audio-capture':'麦克风不可用','not-allowed':'请允许麦克风'}[e.error]||e.error; } if(e.error==='no-speech'&&!isDone) setTimeout(function(){ try{ recognition.start(); }catch(er){} },200); };
   recognition.onend=function(){ if(!isDone) setTimeout(function(){ try{ recognition.start(); }catch(e){ finish(); } },150); };
   try{ recognition.start(); }catch(e){ ov.remove(); showVoiceFallback(onResult); }
 }
